@@ -3,7 +3,7 @@
 ## to merge 3 csv files useful for report writing.
 ## May 2018
 ## All files must be .csv
-## names file must be one name per line
+## names file must be one name per line - Email address, Forename, familyname
 ## other files must be as exported by Moodle.
 
 from pandas import *
