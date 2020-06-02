@@ -17,19 +17,31 @@
 # display list of columns - click to select/reject (or some way to deal with the long
 #      string-literals of column.values. - maybe using column numbers.
 
+import os
 from pandas import *
 
-def import_data(): 
+def import_data():
+    all_csv = os.listdir()
     print('This program takes a csv file with a list of student names and "Email address"')
     print('There must be a file from moodle in this directory called acengmarks.csv')
     print('and others called umwmarks.csv and qmmarks.csv')
+    print()
+    print('List of possible file names:')
+    for csv_name in all_csv:
+        if csv_name.endswith('csv'):
+            print(csv_name)
+    print()
     filename_in = input('What is the name of your <names + email> file: ')
     names = read_csv(filename_in)
     names['Email address'].str.strip() #remove whitespace on key column
-    qm = pandas.read_csv('qmmarks.csv')
-    qm['Email address'].str.strip()
-    # drop unwanted columns
-#    qm = qm.drop(['First name', 'Surname', 'ID number', 'Institution', 'Department',], axis=1)
+
+    if 'qmmarks.csv' in all_csv:
+        qm = pandas.read_csv('qmmarks.csv')
+        qm['Email address'].str.strip()
+        # drop unwanted columns
+#        qm = qm.drop(['First name', 'Surname', 'ID number', 'Institution', 'Department',], axis=1)
+    else: qm = names
+    
     umw = read_csv('umwmarks.csv')
     umw['Email address'].str.strip()
 #    umw = umw.drop(['First name', 'Surname', 'ID number', 'Institution', 'Department'
@@ -71,7 +83,10 @@ def rename_columns(df):
     return df
 
 def save_as(finaldata):
-    filename_out = input('What name to save data, including .xlsx extension: ')
+    filename_out = input('Choose a name for the new spreadsheet: ')
+    if filename_out.endswith('.xlsx'):
+        pass
+    else: filename_out = filename_out + '.xlsx'
     # Create a Pandas Excel writer using XlsxWriter as the engine.
     writer = pandas.ExcelWriter(filename_out, engine='xlsxwriter')
     # Convert the dataframe to an XlsxWriter Excel object.
