@@ -43,31 +43,57 @@ def import_data():
         qm = pandas.read_csv('qmmarks.csv')
         qm['Email address'].str.strip()
         # drop unwanted columns
-#        qm = qm.drop(['First name', 'Surname', 'ID number', 'Institution', 'Department',], axis=1)
+        col_list = qm.columns
+        drop_cols = ['First name', 'Surname', 'ID number',
+                    'Institution', 'Department',
+                    'Last downloaded from this course']
+        for drop_col in drop_cols:
+            if drop_col in col_list:
+                qm = qm.drop([drop_col], axis=1)
+
     else: qm = names  # Placeholder with no new data.
 
     # Load UMW marks
     umw = read_csv('umwmarks.csv')
     umw['Email address'].str.strip()
-#    umw = umw.drop(['First name', 'Surname', 'ID number', 'Institution', 'Department'
-#                    , 'Course total (Real)', 'Last downloaded from this course'
-#                    , 'Course total (Real)', 'Last downloaded from this course'], axis=1)
+    # drop unwanted columns
+    col_list = umw.columns
+    drop_cols = ['First name'
+                 , 'Surname'
+                 , 'ID number'
+                 , 'Institution'
+                 , 'Department'
+                 , 'Course total (Real)'
+                 , 'Last downloaded from this course']
+    for drop_col in drop_cols:
+        if drop_col in col_list:
+            umw = umw.drop([drop_col], axis=1)
 
     # Load Academic English marks
     eng = read_csv('acengmarks.csv')
     eng['Email address'].str.strip()
-#    eng = eng.drop(['First name', 'Surname', 'ID number', 'Institution', 'Department',
-#        'Assignment: Essay Plan for Veil (Real)',
-#       'Assignment: Self Evaluation homework (Real)',
-#        'Assignment: Term 1 Evaluation (Real)',
-#       'Turnitin Assignment 2: University Access (Real)','Category total (Real)',
-#       'Assignment: Rewriten Paragraph from Timed Writing (faith schools) (Real)',
-#       'Turnitin Assignment 2: Tourism in Developing Countries (Real)',
-#       'Workshop: DRAFT Internet Democracy Essay (submission) (Real)',
-#       'Workshop: DRAFT Internet Democracy Essay (assessment) (Real)',
-#       'Turnitin Assignment 2: The Internet and Democracy (Real)',
-#       'Turnitin Assignment 2: Mock Rewrite: Obesity (Real)',
-#       'Course total (Real)', 'Last downloaded from this course'], axis=1)
+    col_list = eng.columns
+    drop_cols = ['Surname'
+                 , 'ID number'
+                 , 'First name'
+                 , 'Institution'
+                 , 'Department'
+                 , 'Assignment: Essay Plan for Veil (Real)'
+                 , 'Assignment: Self Evaluation homework (Real)'
+                 , 'Assignment: Term 1 Evaluation (Real)'
+                 , 'Turnitin Assignment 2: University Access (Real)'
+                 , 'Category total (Real)'
+                 , 'Assignment: Rewriten Paragraph from Timed Writing (faith schools) (Real)'
+                 , 'Turnitin Assignment 2: Tourism in Developing Countries (Real)'
+                 , 'Workshop: DRAFT Internet Democracy Essay (submission) (Real)'
+                 , 'Workshop: DRAFT Internet Democracy Essay (assessment) (Real)'
+                 , 'Turnitin Assignment 2: The Internet and Democracy (Real)'
+                 , 'Turnitin Assignment 2: Mock Rewrite: Obesity (Real)'
+                 , 'Course total (Real)'
+                 , 'Last downloaded from this course']
+    for drop_col in drop_cols:
+        if drop_col in col_list:
+            eng = eng.drop([drop_col], axis=1)
     return names, umw, eng, qm
 
 def merge_dataframes(names, umw, eng, qm):
@@ -103,7 +129,7 @@ def save_as(finaldata):
 def main():
     names, umw, eng, qm = import_data()
     merged = merge_dataframes(names, umw, eng, qm)
-    finaldata = rename_columns(merged)
+    finaldata = merged # finaldata = rename_columns(merged)
     save_as(finaldata)
 
 if __name__ == '__main__':
